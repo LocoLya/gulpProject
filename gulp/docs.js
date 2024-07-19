@@ -13,7 +13,8 @@ const csso = require('gulp-csso');
 const webpCss = require('gulp-webp-css');
 
 
-const connect = require('gulp-connect');
+const browserSync = require('browser-sync');
+
 const clean = require('gulp-clean');
 const fs = require('fs');
 const sourceMaps = require('gulp-sourcemaps');
@@ -28,6 +29,9 @@ const changed = require('gulp-changed');
 const imagemin = require('gulp-imagemin');
 // const webpCss = require('gulp-webp-css');
 const webp = require('gulp-webp');
+
+// потребуется для оповещения о изменении live-reload сервера
+const reload = browserSync.reload;
 
 gulp.task('clean:docs', (done) => {
   if (fs.existsSync('./docs/')) {
@@ -118,11 +122,13 @@ gulp.task('js:docs', () => {
 });
 
 gulp.task('server:docs', () => {
-  connect.server({
-    root: './docs/',
-    livereload: true,
-    port: 8080 
-  });
+  browserSync({
+    server: {
+        baseDir: './docs'
+    },
+    open: false,
+    notify: false
+  })
 });
 
  
